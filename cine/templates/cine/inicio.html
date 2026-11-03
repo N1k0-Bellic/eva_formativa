@@ -1,0 +1,57 @@
+{% extends 'cine/base.html' %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h1 class="mb-3">Cartelera de Películas</h1>
+        
+        <!-- Formulario de Búsqueda y Filtro por Género (Método GET) -->
+        <form method="GET" class="row g-3">
+            <div class="col-md-5">
+                <input type="text" name="q" class="form-control" placeholder="Buscar por título..." value="{{ busqueda }}">
+            </div>
+            <div class="col-md-4">
+                <select name="genero" class="form-select">
+                    <option value="">Todos los géneros</option>
+                    {% for g in generos %}
+                        <option value="{{ g.id }}" {% if genero_seleccionado == g.id %}selected{% endif %}>
+                            {{ g.nombre }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Listado de Películas -->
+<div class="row">
+    {% for pelicula in peliculas %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                {% if pelicula.afiche %}
+                    <img src="{{ pelicula.afiche.url }}" class="card-img-top" alt="{{ pelicula.titulo }}" style="height: 350px; object-fit: cover;">
+                {% else %}
+                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 350px;">
+                        Sin Afiche
+                    </div>
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ pelicula.titulo }}</h5>
+                    <p class="text-muted mb-1"><small>Género: {{ pelicula.genero.nombre }}</small></p>
+                    <p class="fw-bold text-success">${{ pelicula.precio|floatformat:0 }}</p>
+                    <p class="card-text text-truncate">{{ pelicula.sinopsis }}</p>
+                    <a href="{% url 'cine:detalle' pelicula.id %}" class="btn btn-outline-dark mt-auto">Ver Detalle y Comprar</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning text-center">No se encontraron películas disponibles en la cartelera.</div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

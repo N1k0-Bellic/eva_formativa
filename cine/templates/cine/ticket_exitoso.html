@@ -1,0 +1,27 @@
+{% extends 'cine/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow border-success">
+            <div class="card-header bg-success text-white text-center">
+                <h3>¡Compra Exitosa!</h3>
+            </div>
+            <div class="card-body">
+                <p><strong>Código de Ticket:</strong> <span class="badge bg-dark fs-5">{{ ticket.codigo }}</span></p>
+                <hr>
+                <p><strong>Película:</strong> {{ ticket.pelicula.titulo }}</p>
+                <p><strong>Comprador:</strong> {{ ticket.nombre_comprador }}</p>
+                <p><strong>Correo:</strong> {{ ticket.correo_comprador }}</p>
+                <p><strong>Cantidad de entradas:</strong> {{ ticket.cantidad }}</p>
+                <p><strong>Fecha y Hora:</strong> {{ ticket.fecha_compra }}</p>
+                <hr>
+                <h4 class="text-end text-success">Total Pagado: ${{ total_pagar|floatformat:0 }}</h4>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{% url 'cine:inicio' %}" class="btn btn-primary">Volver al Inicio</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
